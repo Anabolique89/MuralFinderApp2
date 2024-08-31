@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { layout } from '../style';
+import styles, { layout } from '../style';
 import BlogService from '../services/BlogService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
 import { useParams } from 'react-router-dom';
+import { BackToTopButton } from '../components';
 
 const EditBlog = () => {
      const {blogId } = useParams()
@@ -123,7 +124,10 @@ const EditBlog = () => {
                         </button>
                     </form>
                 </div>
-            <Footer />
+                <BackToTopButton />
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
 
             </div>
         </>

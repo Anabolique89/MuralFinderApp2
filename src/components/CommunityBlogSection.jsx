@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +7,7 @@ import BlogService from '../services/BlogService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import AuthService from '../services/AuthService';
 import styles, { layout } from '../style';
+
 // import Button from './Button';
 
 const CommunityBlogSection = () => {
@@ -14,7 +16,10 @@ const CommunityBlogSection = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
+  const user = AuthService.getUser() ?? null;
+
   const currentUser = AuthService.getUser();
+  const userImage = blogPosts.user?.profile?.profile_image_url || '';
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -61,10 +66,10 @@ const CommunityBlogSection = () => {
           </div>
         )}
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className= {styles.heading2}>From the blog</h2>
+          <h2 className={styles.heading2}>From the blog</h2>
           <p className={`${styles.paragraph}`}>
             Explore our latest blog posts covering a variety of artistic topics. Please feel free to submit your article if you are interested in
-            helping our community to expand. Please be mindful with the type of content you wish to post, otherwise we will block and delete your account. Thanks! 
+            helping our community to expand. Please be mindful with the type of content you wish to post, otherwise we will block and delete your account. Thanks!
           </p>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -109,9 +114,11 @@ const CommunityBlogSection = () => {
                 </div>
                 <div className="flex items-center mt-4 w-full text-white justify-between">
                   <div className="flex items-center">
+
                     <a href={`/profile/${blogPost.user.id}`}>
-                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2" />
+                      <img src={`https://api.muralfinder.net${blogPost.user.profile?.profile_image_url}`} alt={blogPost.user?.username} className='h-12 w-12 rounded-full mr-2 bg-purple-500 p-1' />
                     </a>
+
                     <div>
                       <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                       <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>

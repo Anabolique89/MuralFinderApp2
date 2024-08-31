@@ -25,6 +25,9 @@ import SingleArtwork from "./SingleArtwork.jsx";
 import CategoryCard from "./CategoryCard.jsx";
 import Carousel from "./Carousel.jsx";
 import MuiBottomNavigation from "./MuiBottomNavigation.tsx";
+import BackToTopButton from "./BackToTopButton.jsx";
+import NotificationPanel from "./NotificationPanel.jsx";
+import Chart from "./Chart.jsx";
 
 export {
   Navbar,
@@ -55,4 +58,7 @@ export {
   CategoryCard,
   Carousel,
   MuiBottomNavigation,
+  BackToTopButton,
+  NotificationPanel,
+  Chart,
 };

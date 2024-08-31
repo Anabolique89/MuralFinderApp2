@@ -4,7 +4,7 @@ import ArtworkService from '../services/ArtworkService';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Carousel = () => {
   const maxScrollWidth = useRef(0);
@@ -63,7 +63,6 @@ const Carousel = () => {
     ArtworkService.loadArtworks()
       .then(data => {
         setArtworks(data);
-        console.log(data)
         setIsLoading(false);
       })
       .catch(err => {
@@ -82,7 +81,7 @@ const Carousel = () => {
           artworks.map(categoryData => (
             <div key={categoryData.category} className="mb-8">
               <h2 className={`${styles.paragraph} text-2xl mb-2 font-bold text-white`}>{categoryData.category}</h2>
-              <hr  className='p-5 mt-1 mb-2'/>
+              <hr className='p-5 mt-1 mb-2' />
               <div className="flex items-center space-x-4">
                 <div className="overflow-x-auto flex-1 scrollbar-thin scrollbar-webkit">
                   <div ref={carousel} className="flex space-x-4">
@@ -92,32 +91,32 @@ const Carousel = () => {
                           <img src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage} alt={artwork.title || 'Artwork'} className="w-full h-40 object-cover" />
                           <div className="absolute inset-0 flex items-start justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 pl-2">
                             <div className="flex items-center mt-4 w-full text-white justify-between">
-                  <div className="flex items-center">
-                    <a href={`/profile/${artwork.user.id}`}>
-                      <FontAwesomeIcon icon={faUser} className="h-4 w-4 rounded-full mr-2 bg-purple-500 p-2" />
-                    </a>
-                    <div>
-                      <p className="font-semibold font-raleway">{artwork.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-  
-                    </div>
-                  </div>
-                  {currentUser && currentUser.id === artwork.user.id && (
-                    <div className="flex space-x-2 ml-20">
-                      <Link to={`/artwork/edit/${artwork.id}`}>
-                        <button className="text-blue-500 hover:text-blue-700">
-                          <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                      </Link>
-                      <button onClick={() => handleDelete(artwork.id)} className="text-red-500 hover:text-red-700">
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </div>
-                  )}
-                        <br/> 
-          
-          {/* <h3 className={`${styles.paragraph}`}>{artwork.title}</h3> */}
-                </div>
-        </div>
+                              <div className="flex items-center">
+                                <Link to={`/profile/${artwork.user.id}`} className="flex items-center">
+                                  {artwork.user.profile.profile_image_url ? (
+                                    <img src={`https://api.muralfinder.net${artwork.user.profile.profile_image_url}`} alt={artwork.user.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
+                                  ) : (
+                                    <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+                                  )}
+                                  <div>
+                                    <p className="font-semibold font-raleway">{artwork.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                                  </div>
+                                </Link>
+                              </div>
+                              {currentUser && currentUser.id === artwork.user.id && (
+                                <div className="flex space-x-2 ml-20">
+                                  <Link to={`/artwork/edit/${artwork.id}`}>
+                                    <button className="text-blue-500 hover:text-blue-700">
+                                      <FontAwesomeIcon icon={faEdit} />
+                                    </button>
+                                  </Link>
+                                  <button onClick={() => handleDelete(artwork.id)} className="text-red-500 hover:text-red-700">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </a>
                       </div>
                     ))}

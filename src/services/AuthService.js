@@ -191,6 +191,36 @@ const AuthService = {
       throw error;
     }
   },
+
+  deleteAccount: async (userId) => {
+    try {
+      if (!userId) {
+        throw new Error('Missing userId parameter');
+      }
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('User not authenticated');
+      }
+
+      console.log(userId);
+
+      const response = await axios.delete(`${BASE_URL}${authEndpoints.deleteAccount(userId)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      if (response.status === 200) {
+        return response.data.message;
+      } else {
+        throw new Error('Failed to delete profile');
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 export default AuthService;

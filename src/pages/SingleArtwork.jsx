@@ -6,9 +6,10 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons/faEllipsisVertical';
 import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
+import { BackToTopButton, Footer } from '../components';
+import { Link } from 'react-router-dom';
 
-
-const SingleArtwork = () => (
+const SingleArtwork = () => {
 
    const artworkId = useParams();
 
@@ -46,10 +47,18 @@ const SingleArtwork = () => (
                 
                    </a>
                    </div>
-            <div className="author flex items-center -ml-3 px-2">
-                    <div className="user-logo">
-                        <img className="w-12 h-12 object-cover rounded-full mx-4  shadow" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="avatar"/>
-                    </div>
+            <div className="author flex items-center px-2">
+                  
+            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
+              {userImage ? (
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+              )}
+              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
+                {artwork.user?.username || 'Unknown'}
+              </div>
+            </Link>
                     <h2 className="tracking-tighter font-raleway font-bold text-purple-500 text-l mb-2">
                         <a href="#">Mohammed Ibrahim</a> <span className={`${styles.paragraph} text-sm float-right ml-80`}>21 SEP 2015.</span>
                     </h2>
@@ -79,8 +88,14 @@ const SingleArtwork = () => (
             </div>
         </div>
     </div>
+    <BackToTopButton />
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
     </section>
-  );
+
+    
+ };
 
 
 export default SingleArtwork

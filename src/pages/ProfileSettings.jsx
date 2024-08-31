@@ -6,16 +6,17 @@ import ProfileUpdate from './ProfileUpdate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
+import { BackToTopButton } from '../components';
 
 
 const ProfileSettings = () => {
     const [profileData, setProfileData] = useState({
         first_name: '',
         last_name: '',
-        email: '',
         profession: '',
         bio: ''
     });
+    const [isProfileUpdated, setIsProfileUpdated] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -33,14 +34,12 @@ const ProfileSettings = () => {
                     throw new Error('User ID not found');
                 }
                 const profile = await AuthService.getProfile(userId);
-                console.log(profile)
                 setProfileData(profile);
             } catch (error) {
                 console.error('Error fetching profile data:', error.message);
             }
         };
         fetchProfileData();
-        console.log(profileData)
     }, []);
 
     return (
@@ -67,15 +66,16 @@ const ProfileSettings = () => {
                                 </div>
 
                                 <div className="items-center mt-4 sm:mt-14 font-raleway text-white">
-                                    <div className="mb-2 sm:mb-6">
-                                        <label htmlFor="profession" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Profile Title</label>
-                                        <input type="text" id="profession" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Profile Title" value={profileData.username} onChange={handleInputChange} required />
-                                    </div>
+
                                     <div className="mb-4 font-raleway">
-                                        <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Profile Text</label>
-                                        <textarea id="message" rows="2" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " placeholder="Profile Text..." value={profileData.bio} onChange={handleInputChange}></textarea>
+                                        <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Bio</label>
+                                        <div className="rounded-lg border border-indigo-300 p-2.5">
+                                            <p className="text-sm text-white">
+                                                {profileData && profileData.profile && profileData.profile.bio}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <hr className="mt-4 mb-4" />
+
                                     <h2 className="font-raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Password</h2>
                                     <div className="flex items-center">
                                         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
@@ -114,7 +114,8 @@ const ProfileSettings = () => {
                             <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
                                 <h2 className="font-raleway text-white text-2xl font-bold sm:text-xl pt-6 pb-6">Profile Info</h2>
                                 {profileData.profile ? (
-                                    <ProfileUpdate profile={profileData.profile} />
+                                    <ProfileUpdate profile={profileData.profile} onProfileUpdated={() => setIsProfileUpdated(true)} />
+
                                 ) : (
                                     <FontAwesomeIcon icon={faSpinner} spin className="text-white text-2xl" />
                                 )}
@@ -124,6 +125,7 @@ const ProfileSettings = () => {
 
 
             </div>
+            <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>

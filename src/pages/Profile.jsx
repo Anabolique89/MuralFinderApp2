@@ -10,7 +10,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsHero } from '../components';
+import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../components';
 import ArtworkService from '../services/ArtworkService';
 
 
@@ -32,20 +32,21 @@ const Profile = () => {
     useEffect(() => {
         setIsLoading(true);
         Promise.all([
-          ArtworkService.loadArtworks(),
-          ArtworkService.loadCategories()
+
+            ArtworkService.getUserArtworks(AuthService.getUser()?.id),
+            ArtworkService.loadCategories()
         ])
-          .then(([artworksData, categoriesData]) => {
-            setImages(artworksData);
-            setFilteredImages(artworksData);
-            setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
-            setIsLoading(false);
-          })
-          .catch(err => {
-            console.log(err);
-            setIsLoading(false);
-          });
-      }, []);
+            .then(([artworksData, categoriesData]) => {
+                setImages(artworksData);
+                setFilteredImages(artworksData);
+                setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            });
+    }, []);
 
 
     useEffect(() => {
@@ -106,15 +107,15 @@ const Profile = () => {
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     <div className="col-span-4 sm:col-span-3">
                         <div className="bg-white profile-content p-6 ">
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col items-center object-cover">
                                 <img
                                     src={(profileData.profile.profile_image_url ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}` : defaultimg)}
-                                    className=" object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    className="object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
                                     alt="Bordered avatar"
                                 />
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <p className={`${styles.paragraph} font-semibold mt-5`}>Profile Title </p><br />
-                                <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
+                                <br />
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
                                 </div>
@@ -165,8 +166,7 @@ const Profile = () => {
                     <div className="col-span-4 sm:col-span-9">
 
                         <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
-                        <p className="text-white font-raleway font-regular mb-4">Bio text goes here...
-                        </p>
+            
                         <div className=' float-right'><RiMessage2Fill className='w-[30px] h-[30px] ' /></div>
                         <div className='highlights flex flex-column mb-4 mt-2'>
                             {!blogData ? (
@@ -238,34 +238,38 @@ const Profile = () => {
             </div>
 
 
-            {/* <UserArtworks /> */}
+      
             <div className="bg-indigo-700 w-full overflow-hidden">
-            <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
+                <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
-
+            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
             {isLoading ? (
-        <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
-      ) : (
-        <div className='container mx-auto py-2'>
-          {filteredImages.map(categoryData => (
-            <div key={categoryData.category}>
-              <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
-              <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {categoryData.artworks.map(artwork => (
-                  <ArtworksGallery key={artwork.id} artwork={artwork} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
+                <div className='container mx-auto py-2'>
+                    <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
+                </div>
+            ) : (
+                filteredImages && filteredImages.length > 0 ? (
+                    <div className='container mx-auto py-2'>
+                        {filteredImages.map(categoryData => (
+                            <div key={categoryData.category}>
+                                <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
+                                <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                    {categoryData.artworks.map(artwork => (
+                                        <ArtworksGallery key={artwork.id} artwork={artwork} />
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <h2 className={`${styles.heading2} `}>No artworks found.</h2>
+                )
+            )}
+</div>
             <DragDropImageUploader />
-            {/* <WallsHero />
-            <DisplayWalls /> */}
 
-<WallsHero />
-
+            <WallsIntro />
+            <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>

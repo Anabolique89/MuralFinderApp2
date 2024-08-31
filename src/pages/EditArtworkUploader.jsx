@@ -5,6 +5,8 @@ import ArtworkService from '../services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
+import styles from '../style';
+import { BackToTopButton } from '../components';
 
 const EditArtworkUploader = () => {
   const { artworkId } = useParams();
@@ -207,18 +209,22 @@ const EditArtworkUploader = () => {
             </div>
           )}
         </div>
+        <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <div className="test-image-container">
           {images.map((image, index) => (
             <div className="image" key={index}>
               <span className="delete" onClick={() => deleteImage(index)}>
                 &times;
               </span>
-              <img src={image.url} alt={image.name} />
+              <img className='object-cover' src={image.url} alt={image.name} />
             </div>
           ))}
         </div>
       </div>
+      <BackToTopButton />
+      
       <Footer />
+      </div>
     </>
   );
 };

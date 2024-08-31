@@ -3,16 +3,14 @@ import { FaComments } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import { Link, useNavigate } from 'react-router-dom';
 
-const ArtworksGallery = ({ artwork }) => {
+const ArtworksGallery = ({ artwork, onDelete }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  // console.log(user)
-  // console.log(artwork)
   const userImage = artwork.user?.profile?.profile_image_url || '';
   const defaultImage = 'https://example.com/default-image.jpg';
   const [successMessage, setSuccessMessage] = useState('');
@@ -20,13 +18,12 @@ const ArtworksGallery = ({ artwork }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
   const handleEdit = (artworkId) => {
     navigate(`/artwork/edit/${artworkId}`);
   };
 
-  const handleDelete = async (artworkId) => {
-    setLoading(true); // Set loading state to true
+  const handleDelete = useCallback(async (artworkId) => {
+    setLoading(true);
     try {
       const deleteResponse = await ArtworkService.deleteArtwork(artworkId);
       if (deleteResponse) {
@@ -34,24 +31,25 @@ const ArtworksGallery = ({ artwork }) => {
         setErrorMessage('');
         setTimeout(() => {
           setSuccessMessage('');
-        }, 5000); // Clear success message after 5 seconds
+        }, 5000);
+        onDelete(artworkId);
       } else {
         setErrorMessage('Failed to delete artwork');
         setSuccessMessage('');
         setTimeout(() => {
           setErrorMessage('');
-        }, 5000); // Clear error message after 5 seconds
+        }, 5000);
       }
     } catch (error) {
       setErrorMessage('Error deleting artwork');
       setSuccessMessage('');
       setTimeout(() => {
         setErrorMessage('');
-      }, 5000); // Clear error message after 5 seconds
+      }, 5000);
     } finally {
-      setLoading(false); // Set loading state to false
+      setLoading(false);
     }
-  };
+  }, [onDelete]);
 
   return (
     <div className='rounded-xl overflow-hidden shadow-lg w-50 relative cta-block box-shadow p-2 sm:p-0 xs:m-2 sm:w-full'>
@@ -65,7 +63,7 @@ const ArtworksGallery = ({ artwork }) => {
           {errorMessage}
         </div>
       )}
-  
+
       <div className='w-full'>
         <img
           className='w-full h-48 object-cover p-2'
@@ -74,14 +72,16 @@ const ArtworksGallery = ({ artwork }) => {
         />
         <div className='px-6 py-4'>
           <div className='flex items-center'>
-            {userImage ? (
-              <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 ' />
-            ) : (
-              <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
-            )}
-            <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-              {artwork.user?.username || 'Unknown'}
-            </div>
+            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
+              {userImage ? (
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+              )}
+              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
+                {artwork.user?.username || 'Unknown'}
+              </div>
+            </Link>
           </div>
           <div className='font-bold text-white text-xl mb-2'>
             <Link to={`/artworks/${artwork.id}`}>
@@ -94,10 +94,10 @@ const ArtworksGallery = ({ artwork }) => {
           </ul>
           {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">
-              <Link to={`/artwork/edit/${artwork.id}`}> 
-              <FontAwesomeIcon
-                icon={faPencil}
-              />
+              <Link to={`/artwork/edit/${artwork.id}`}>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                />
               </Link>
 
               <FontAwesomeIcon

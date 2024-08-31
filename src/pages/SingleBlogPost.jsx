@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from '../style';
 import DOMPurify from 'dompurify';
+import { BackToTopButton, Footer } from '../components';
 
 const SingleBlogPost = () => {
   const { postId } = useParams();
@@ -160,7 +161,12 @@ const SingleBlogPost = () => {
 
         </div>
       </div>
+      <BackToTopButton />
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
     </div>
+    
   );
 };
 

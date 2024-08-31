@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { UserArtworks, Footer, WallsHero } from '../components';
+import { UserArtworks, Footer, WallsHero, ArtworksGallery, BackToTopButton } from '../components';
 import { useParams } from 'react-router-dom';
 import FellowshipService from '../services/FellowshipService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
+import ArtworkService from '../services/ArtworkService';
 
 const PublicProfile = () => {
     const { userId } = useParams();
@@ -21,6 +22,10 @@ const PublicProfile = () => {
     const [loadingFollow, setLoadingFollow] = useState(false);
     const [followMessage, setFollowMessage] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [filteredImages, setFilteredImages] = useState([]);
+    const [filter, setFilter] = useState('All');
+    const [categories, setCategories] = useState([{ id: 'all', name: 'All' }]);
 
     const fetchProfileData = async () => {
         try {
@@ -87,6 +92,21 @@ const PublicProfile = () => {
     useEffect(() => {
         fetchProfileData();
         fetchBlogsByUser();
+        setIsLoading(true);
+        Promise.all([
+
+            ArtworkService.getUserArtworks(userId),
+            ArtworkService.loadCategories()
+        ])
+            .then(([artworksData, categoriesData]) => {
+                setFilteredImages(artworksData);
+                setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            });
 
         const checkIsFollowing = async () => {
             try {
@@ -137,13 +157,12 @@ const PublicProfile = () => {
                                     src={(profileData && profileData.profile)
                                         ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}`
                                         : defaultimg}
-                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img object-cover"
                                     alt="Bordered avatar"
                                 />
 
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <p className={`${styles.paragraph} font-semibold mt-5`}>Profile Title </p><br />
-                                <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -204,8 +223,6 @@ const PublicProfile = () => {
                     </div>
                     <div className="col-span-4 sm:col-span-9">
                         <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
-                        <p className="text-white font-raleway font-regular mb-4">Bio text goes here...
-                        </p>
                         <div className='highlights flex flex-column mb-4 mt-2'>
                             {!blogData ? (
                                 // Display spinners while blog data is being fetched
@@ -261,16 +278,50 @@ const PublicProfile = () => {
                                     </div>
                                 ))
                                 )}
-
-
-                            <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
-                            <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
-
+                            {!AuthService.isAuthenticated && (
+                                <>
+                                    {/* Render links for non-authenticated users */}
+                                    <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                        REGISTER
+                                    </a>
+                                    <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                        LOGIN
+                                    </a>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
             {/* <UserArtworks /> */}
+
+            <div className="bg-indigo-700 w-full overflow-hidden">
+                <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
+            </div>
+
+            {isLoading ? (
+                <div className='container mx-auto py-2'>
+                    <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
+                </div>
+            ) : (
+                filteredImages && filteredImages.length > 0 ? (
+                    <div className='container mx-auto py-2'>
+                        {filteredImages.map(categoryData => (
+                            <div key={categoryData.category}>
+                                <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
+                                <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                    {categoryData.artworks.map(artwork => (
+                                        <ArtworksGallery key={artwork.id} artwork={artwork} />
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No artworks found.</p>
+                )
+            )}
+            <BackToTopButton />
             {/* <WallsHero />
             <DisplayWalls /> */}
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>

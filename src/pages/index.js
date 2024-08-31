@@ -1,6 +1,6 @@
 import About from "./About";
 import AddBlog from "./AddBlog";
-import BlogPosts from "./BlogPosts";
+// import BlogPosts from "./BlogPosts";
 import Community from "./Community";
 import Contact from "./Contact";
 import DisplayWalls from "./DisplayWalls";
@@ -31,11 +31,18 @@ import ViewWall from "./ViewWall";
 import WallFeed from "./WallFeed";
 import Walls from "./Walls";
 import ArtworkFeed from "./ArtworkFeed";
+import Dashboard from "./Dashboard";
+import WallsDashboard from "./WallsDashboard";
+import ArtworksDashboard from "./ArtworksDashboard";
+import ArtworkDetails from "./ArtworkDetails";
+import Trash from "./Trash";
+import Users from "./Users";
+import PostsDashboard from "./PostsDashboard";
 
 export {
   About,
   AddBlog,
-  BlogPosts,
+  // BlogPosts,
   Community,
   Contact,
   DisplayWalls,
@@ -66,4 +73,11 @@ export {
   WallFeed,
   Walls,
   ArtworkFeed,
+  Dashboard,
+  WallsDashboard,
+  ArtworksDashboard,
+  ArtworkDetails,
+  Trash,
+  Users,
+  PostsDashboard,
 };

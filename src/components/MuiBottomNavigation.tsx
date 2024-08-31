@@ -9,39 +9,97 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Router } from '@mui/icons-material';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
-  const [active, setActive] = React.useState(0);
-
-  const ref = React.useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-//   const pages = ["Home", "Profile", "Add", "Map", "Settings"];
 
+  React.useEffect(() => {
+    // Set the active value based on the current location
+    switch (location.pathname) {
+      case '/':
+        setValue(0);
+        break;
+      case '/Profile':
+        setValue(1);
+        break;
+      case '/addWall':
+        setValue(2);
+        break;
+      case '/Map':
+        setValue(3);
+        break;
+      case '/ProfileSettings':
+        setValue(4);
+        break;
+      default:
+        setValue(0);
+    }
+  }, [location.pathname]);
 
+  const handleNavigation = (newValue, path) => {
+    setValue(newValue);
+    navigate(path);
+  };
 
   return (
-    <Box sx={{ pb: 7 }} ref={ref}>
+    <Box sx={{ pb: 7 }}>
       <CssBaseline />
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200}} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200 }} elevation={3}>
         <BottomNavigation
           showLabels
           value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+          onChange={(event, newValue) => setValue(newValue)}
         >
-          <BottomNavigationAction onClick={() => navigate('/')} className={location.pathname === '/' ? 'Mui-selected' : ''} label="Home" sx={{ color: '#353535'}} icon={<HomeIcon />} />
-          <BottomNavigationAction onClick={() => navigate('/Profile')} className={location.pathname === '/Profile' ? 'Mui-selected' : ''} label="Profile" sx={{ color: '#353535'}} icon={<PersonIcon />} />
-          <BottomNavigationAction onClick={() => navigate('/addWall')} label="Add" sx={{ color: '#353535'}} className={location.pathname === '/addWall' ? 'Mui-selected' : ''} icon={<AddCircleIcon />} />
-          <BottomNavigationAction onClick={() => navigate('/Map')} label="Map" sx={{ color: '#353535'}} className={location.pathname === '/Map' ? 'Mui-selected' : ''}icon={<LocationOnIcon />} />
-          <BottomNavigationAction onClick={() => navigate('/ProfileSettings')} label="Settings" sx={{ color: '#353535'}} className={location.pathname === '/ProfileSettings' ? 'Mui-selected' : ''} icon={<SettingsIcon />} />
+          <BottomNavigationAction
+            onClick={() => handleNavigation(0, '/')}
+            label="Home"
+            sx={{
+              color: value === 0 ? 'primary.main' : '#353535',
+              transform: value === 0 ? 'scale(1.2)' : 'scale(1)'
+            }}
+            icon={<HomeIcon />}
+          />
+          <BottomNavigationAction
+            onClick={() => handleNavigation(1, '/Profile')}
+            label="Profile"
+            sx={{
+              color: value === 1 ? 'primary.main' : '#353535',
+              transform: value === 1 ? 'scale(1.2)' : 'scale(1)'
+            }}
+            icon={<PersonIcon />}
+          />
+          <BottomNavigationAction
+            onClick={() => handleNavigation(2, '/addWall')}
+            label="Add"
+            sx={{
+              color: value === 2 ? 'primary.main' : '#353535',
+              transform: value === 2 ? 'scale(1.2)' : 'scale(1)'
+            }}
+            icon={<AddCircleIcon />}
+          />
+          <BottomNavigationAction
+            onClick={() => handleNavigation(3, '/Map')}
+            label="Map"
+            sx={{
+              color: value === 3 ? 'primary.main' : '#353535',
+              transform: value === 3 ? 'scale(1.2)' : 'scale(1)'
+            }}
+            icon={<LocationOnIcon />}
+          />
+          <BottomNavigationAction
+            onClick={() => handleNavigation(4, '/ProfileSettings')}
+            label="Settings"
+            sx={{
+              color: value === 4 ? 'primary.main' : '#353535',
+              transform: value === 4 ? 'scale(1.2)' : 'scale(1)'
+            }}
+            icon={<SettingsIcon />}
+          />
         </BottomNavigation>
       </Paper>
     </Box>
   );
 }
-

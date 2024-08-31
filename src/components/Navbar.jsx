@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { faUser, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthService from "../services/AuthService";
+import NotificationPanel from "./NotificationPanel";
+import { MdOutlineSearch } from "react-icons/md";
 
 const Navbar = () => {
   const [active, setActive] = useState("Home");
@@ -105,6 +107,20 @@ const Navbar = () => {
             <div className="w-[35px] h-[35px] flex items-center justify-center rounded-full">
               <img src={ArtZoroLogoWhite} alt="ArtZoroLogoWhite" className="w-[120px] h-[60px]" />
             </div>
+            {/* Search Bar */}
+            <div className='w-60 2xl:w-[400px] flex items-center py-1 px-2 gap-2 rounded-full bg-[#f3f4f6]'>
+          <MdOutlineSearch className='text-gray-500 text-xl' />
+
+          <input
+            type='text'
+            placeholder='Search....'
+            className='flex-1 outline-none bg-transparent placeholder:text-gray-500 text-gray-800'
+          />
+        </div>
+        {/* Notifications */}
+            <div className='flex gap-2 items-center'>
+        <NotificationPanel />
+      </div>
 
             <div className="relative font-medium font-roboto">
               <Link to="/profile" className="text-white ml-2">{user.username}</Link>
@@ -112,13 +128,7 @@ const Navbar = () => {
               {toggle && (
                 <div className="absolute top-10 right-0  cta-block text-white p-4 rounded-md shadow-md  z-[120]" ref={menuRef}>
                   <Link to="/profile" className="block text-gray-200 hover:text-pink-600">PROFILE</Link>
-                  {/* <button
-                    className="block text-gray-200 hover:text-pink-600 mt-2 focus:outline-none"
-                    onClick={handleLogout}
-                    disabled={isLoggingOut}
-                  >
-                    {isLoggingOut ? <FontAwesomeIcon icon={faSpinner} spin /> : 'LOGOUT'}
-                  </button> */}
+                
                 </div>
               )}
             </div>

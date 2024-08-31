@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation } from "./components";
+import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -28,7 +28,10 @@ import Footer from './components/Footer';
 import EditBlog from './pages/EditBlog';
 import EditArtworkUploader from './pages/EditArtworkUploader';
 import ArtworkFeed from './pages/ArtworkFeed';
+// import BlogPosts from './pages/BlogPosts';
 import AddWall from './components/AddWall';
+import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
+
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -36,7 +39,6 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
-  // console.log(filteredImages)
 
   useEffect(() => {
     setIsLoading(true);
@@ -97,7 +99,7 @@ const App = () => {
                   <Billing />
                   <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
                     <Carousel />
-                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>See All</button>
+                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><a href='/ArtworkFeed' >See All</a></button>
                   </div>
 
                   <DragDropImageUploader />
@@ -106,6 +108,7 @@ const App = () => {
                   <Testimonials />
                  
                   <CTA />
+                  <BackToTopButton />
                   <Footer />
                 </div>
               </div>
@@ -126,9 +129,17 @@ const App = () => {
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/WallsDashboard" element={<WallsDashboard />} />
+          <Route path="/ArtworksDashboard" element={<ArtworksDashboard/>} />
+          <Route path="/PostsDashboard" element={<PostsDashboard/>} />
+          <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
+          <Route path="/Trash" element={<Trash />} />
+          <Route path="/Users" element={<Users />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
           <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
+          {/* <Route path="/BlogPosts" element={<BlogPosts />} /> */}
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 
@@ -152,7 +163,7 @@ const App = () => {
               <Profile />
             </PrivateRoute>
           } />
-          <Route path="/profilesettings" element={
+          <Route path="/ProfileSettings" element={
             <PrivateRoute>
               <ProfileSettings />
             </PrivateRoute>

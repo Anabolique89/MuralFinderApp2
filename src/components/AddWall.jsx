@@ -7,6 +7,7 @@ import LegalCheckbox from './LegalCheckbox';
 import WallService from '../services/WallService';
 import Footer from '../components/Footer';
 import styles from '../style';
+import BackToTopButton from './BackToTopButton';
 
 
 const Root = styled(Paper)(({ theme }) => ({
@@ -267,7 +268,7 @@ const AddWall = () => {
         </Form>
 
       </Root>
-
+< BackToTopButton />
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>

@@ -6,7 +6,8 @@ export const authEndpoints = {
   logout: 'logout',
   profile: (userId) => `profiles/${userId}`,
   updateProfile: (userId) => `profiles/${userId}`,
-  uploadProfileImage: (userId) => `profiles/${userId}/image`
+  uploadProfileImage: (userId) => `profiles/${userId}/image`,
+  deleteAccount: (userId) => `delete/user/${userId}`
 };
 
 
@@ -15,7 +16,8 @@ export const artworkEndpoints = {
   uploadArtwork: 'artworks',
   getCategoires: 'artworks/categories/fetch',
   searchArtworks: 'artworks/artwork/search',
-  artworkById: (artworkId) => `artworks/${artworkId}`
+  artworkById: (artworkId) => `artworks/${artworkId}`,
+  getUserArtworks: (userId) => `artworks/users/${userId}`
 };
 
 export const blogEndpoints = {
@@ -42,6 +44,11 @@ export const fellowshipEndpoints = {
   follow: 'fellowships/follow',
   unfollow: 'fellowships/unfollow',
   isFollowing: (userId) => `fellowships/isFollowing/${userId}`,
+}
+
+
+export const dashboardEndpoints = {
+  getDashboardData: 'admin/statistics'
 }
 
 export const contactEndpoint = "/contact";

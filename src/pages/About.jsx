@@ -1,6 +1,6 @@
 import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
-import { Business, CardDeal, CTA, Footer, Stats, AboutSection2, CardWithImageExample, HeroAbout } from "../components";
+import { Footer, AboutSection2, CardWithImageExample, HeroAbout, BackToTopButton } from "../components";
 
 const About = () => {
   return (
@@ -17,7 +17,7 @@ const About = () => {
       <div className={`bg-indigo-700 ${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <CardWithImageExample />
-
+          <BackToTopButton />
         </div>
       </div>
 
