@@ -4,6 +4,7 @@ import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
 import AuthService from '../services/AuthService';
 import { BackToTopButton, Footer } from '../components';
+import SocialLogin from '../components/SocialLogin';
 
 const IndexSignup = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +24,7 @@ const IndexSignup = () => {
     try {
       const response = await AuthService.signup(username, email, role, password, passwordConfirmation);
 
-      console.log(response.message);
+      // console.log(response.message);
       navigate('/login');
     } catch (err) {
       if (err.message && Array.isArray(err.message)) {
@@ -39,7 +40,8 @@ const IndexSignup = () => {
   };
 
   return (
-    <div className={`${layout.sectionImg} bg-indigo-700 mt-0`} >
+    <section>
+    <div className={`flex-1 flex ${styles.flexCenter} mb-2 md:ml-10 ml-0 md:mt-0 mt-2 relative bg-indigo-600 w-full min-h-screen`}>
       <form className="login-form absolute z-[5] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-solid border-2 border-indigo-600" onSubmit={handleSubmit}>
         <h1 className='font-raleway font-semibold ss:text-[30px] text-[35px] text-white ss:leading-[40px] leading-[45px] w-full p-2'>Create Your Account.</h1>
         <div>
@@ -122,22 +124,24 @@ const IndexSignup = () => {
             {isLoading ? <div className="loader"></div> : 'Create Account'}
           </button>
           {/* <Link to={'/Login'} className="bg-red-500 text-white px-4 py-2 rounded-xl">Close</Link> */}
-
+         
         </div>
+        <SocialLogin />
         <div>
           <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black`}>Already have an account?  
-            <a className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-blue-800 underline`} href='/login'>Login Here</a>
+            <a className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-white underline`} href='/login'>Login Here</a>
           </p>
         </div>
       </form>
       <div className={layout.sectionImg}>
-        <img className='w-[80%] h-auto relative z-[2] p-2 md:px-20 sm:px-26 ss:px-34' src={libraWhite} alt="aura" />
+        <img className='w-[90%] h-auto relative z-[2] p-2 md:px-20 sm:px-26 ss:px-34' src={libraWhite} alt="aura" />
       </div>
-      <BackToTopButton />
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-                <Footer />
-            </div>
+     
     </div>
+          <BackToTopButton />
+        
+                  </section>
+    
   );
 };
 

@@ -52,3 +52,17 @@ export const BGS = [
   "bg-red-600",
   "bg-green-600",
 ];
+
+
+export const getRoleClass = (role) => {
+  switch (role) {
+    case 'admin':
+      return 'text-white bg-red-400 border-red-600  rounded-xl px-2 py-1';
+    case 'artist':
+      return 'text-white bg-yellow-400 border-yellow-600  rounded-xl px-2 py-1';
+    case 'art_lover':
+      return 'text-white bg-indigo-400 border-indigo-600  rounded-xl px-2 py-1';
+    default:
+      return 'text-white bg-gray-400 border-gray-600  rounded px-2 py-1';
+  }
+};

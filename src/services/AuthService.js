@@ -220,7 +220,39 @@ const AuthService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  updateUser: async (userId, userData) => {
+    try {
+      if (!userId) {
+        throw new Error('Missing userId parameter');
+      }
+  
+      if (!userData) {
+        throw new Error('Missing userData parameter');
+      }
+  
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('User not authenticated');
+      }
+  
+      const response = await axios.put(`${BASE_URL}${authEndpoints.updateProfile(userId)}`, userData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+  
+      if (response.status === 200) {
+        return response.data.data;
+      } else {
+        throw new Error('Failed to update user');
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, 
 };
 
 export default AuthService;

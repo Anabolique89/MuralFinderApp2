@@ -63,7 +63,7 @@ const ArtworkFeed = () => {
   };
 
   return (
-    <div className="bg-indigo-700 w-full overflow-hidden">
+    <div className="bg-indigo-600 w-full overflow-hidden">
       <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
 
       <div className="flex flex-wrap justify-center mb-8 px-4">
@@ -109,7 +109,7 @@ const ArtworkFeed = () => {
         </div>
       )}
       <DragDropImageUploader />
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
         <Footer />
       </div>
     </div>

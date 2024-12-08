@@ -3,6 +3,8 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';  // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import toastify CSS
 import styles from '../style';
 
 const DragDropImageUploader = () => {
@@ -13,7 +15,7 @@ const DragDropImageUploader = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
-  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [loading, setLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
 
   const isAuthenticated = AuthService.isAuthenticated();
@@ -85,38 +87,43 @@ const DragDropImageUploader = () => {
   }
 
   async function uploadImages() {
-    setLoading(true); // Start loading indicator
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
       formData.append('artwork_category_id', category);
   
-      // Append images to the form data
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image.file);
       });
   
       const message = await ArtworkService.uploadArtwork(formData);
       setResponseMessage(message);
-      console.log(responseMessage)
+
       if (message.includes('successfully')) {
+        toast.success('Artwork uploaded successfully!'); // Show success toast
         setImages([]);
         setTitle('');
         setDescription('');
         setCategory('');
+        setTimeout(() => {
+          window.location.reload(); // Reload the page
+        }, 2000); // Delay for toast display
+      } else {
+        toast.error('Failed to upload artwork.');
       }
+
       setTimeout(() => {
         setResponseMessage(null);
       }, 5000);
     } catch (error) {
       console.error('Error uploading images:', error);
-      setResponseMessage('An error occurred while uploading images');
+      toast.error('An error occurred while uploading images');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }
-  
 
   return (
     <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
@@ -132,7 +139,6 @@ const DragDropImageUploader = () => {
       <div className="flex flex-col md:flex-row">
         {isAuthenticated ? (
           <>
-               
             <section className="w-full md:w-1/2 p-4 border-b md:border-b-0 md:border-r border-gray-300">
               <div className="flex justify-center items-center h-full text-center">
                 <div className="w-full p-2 transition border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-purple-400 focus:outline-none cta-block">
@@ -208,18 +214,19 @@ const DragDropImageUploader = () => {
           </div>
         )}
       </div>
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-      <div className="test-image-container">
-        {images.map((image, index) => (
-          <div className="image" key={index}>
-            <span className="delete" onClick={() => deleteImage(index)}>
-              &times;
-            </span>
-            <img src={image.url} alt={image.name} />
-          </div>
-        ))}
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
+        <div className="test-image-container">
+          {images.map((image, index) => (
+            <div className="image" key={index}>
+              <span className="delete" onClick={() => deleteImage(index)}>
+                &times;
+              </span>
+              <img src={image.url} alt={image.name} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <ToastContainer /> 
     </div>
   );
 };

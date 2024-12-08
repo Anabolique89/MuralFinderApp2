@@ -9,8 +9,6 @@ const ArtworkService = {
       );
       const data = await response.json();
       if (data.success && data.data) {
-        // return data.data;
-        // Sort artworks in each category by created_at in descending order
         const sortedData = data.data.map((categoryData) => ({
           ...categoryData,
           artworks: categoryData.artworks.sort(
@@ -69,7 +67,6 @@ const ArtworkService = {
       const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
       console.log(url);
       const response = await axios.get(url);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error getting artwork:", error);
@@ -185,6 +182,41 @@ const ArtworkService = {
     } catch (error) {
       console.error("Error deleting artwork:", error);
       return error.response ? error.response.data.message : "Unknown error";
+    }
+  },
+
+  loadComments: async (artworkId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}artworks/${artworkId}/comments`);4
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error loading comments:", error);
+      if (error.response) {
+        return error.response.data.message || "Server error occurred";
+      } else {
+        return "Error loading comments";
+      }
+    }
+  },
+
+  addComment: async (artworkId, commentData) => {
+    try {
+      const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${BASE_URL}artworks/${artworkId}/comment`,
+            commentData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        return { success: false, message: error.message };
     }
   },
 };

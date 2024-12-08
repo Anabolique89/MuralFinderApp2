@@ -7,6 +7,8 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
 import styles from '../style';
 import { BackToTopButton } from '../components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditArtworkUploader = () => {
   const { artworkId } = useParams();
@@ -18,8 +20,9 @@ const EditArtworkUploader = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(true);
-  const [responseMessage, setResponseMessage] = useState(null);
   const isAuthenticated = AuthService.isAuthenticated();
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -28,11 +31,12 @@ const EditArtworkUploader = () => {
         setArtwork(fetchedArtwork.data);
         setTitle(fetchedArtwork.data.title);
         setDescription(fetchedArtwork.data.description);
+        setCategory(fetchedArtwork.data?.category?.name);
         if (fetchedArtwork.data.image_path) {
-          setImages([{
-            name: fetchedArtwork.data.title,
-            url: `https://api.muralfinder.net${fetchedArtwork.data.image_path}`,
-            file: null
+          setImages([{ 
+            name: fetchedArtwork.data.title, 
+            url: `https://api.muralfinder.net${fetchedArtwork.data.image_path}`, 
+            file: null 
           }]);
         }
       } catch (error) {
@@ -45,59 +49,53 @@ const EditArtworkUploader = () => {
     fetchArtwork();
   }, [artworkId]);
 
-  function selectFiles() {
-    fileInputRef.current.click();
-  }
+  const selectFiles = () => fileInputRef.current.click();
 
-  function onFileSelect(event) {
+  const onFileSelect = (event) => {
     const files = event.target.files;
     if (files.length === 0) return;
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split('/')[0] !== 'image') continue;
-      setImages((prevImages) => [
-        ...prevImages,
-        {
-          name: files[i].name,
-          url: URL.createObjectURL(files[i]),
-          file: files[i],
-        },
-      ]);
-    }
-  }
 
-  function deleteImage(index) {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  }
+    Array.from(files).forEach(file => {
+      if (file.type.split('/')[0] === 'image') {
+        setImages(prevImages => [
+          ...prevImages,
+          { name: file.name, url: URL.createObjectURL(file), file }
+        ]);
+      }
+    });
+  };
 
-  function onDragOver(event) {
+  const deleteImage = (index) => {
+    setImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
+  const onDragOver = (event) => {
     event.preventDefault();
     setIsDragging(true);
     event.dataTransfer.dropEffect = 'copy';
-  }
+  };
 
-  function onDragLeave(event) {
+  const onDragLeave = (event) => {
     event.preventDefault();
     setIsDragging(false);
-  }
+  };
 
-  function onDrop(event) {
+  const onDrop = (event) => {
     event.preventDefault();
     setIsDragging(false);
     const files = event.dataTransfer.files;
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split('/')[0] !== 'image') continue;
-      setImages((prevImages) => [
-        ...prevImages,
-        {
-          name: files[i].name,
-          url: URL.createObjectURL(files[i]),
-          file: files[i],
-        },
-      ]);
-    }
-  }
 
-  async function editArtwork() {
+    Array.from(files).forEach(file => {
+      if (file.type.split('/')[0] === 'image') {
+        setImages(prevImages => [
+          ...prevImages,
+          { name: file.name, url: URL.createObjectURL(file), file }
+        ]);
+      }
+    });
+  };
+
+  const editArtwork = async () => {
     setLoading(true);
     try {
       const formData = new FormData();
@@ -107,22 +105,30 @@ const EditArtworkUploader = () => {
       if (firstImage) {
         formData.append('image', firstImage.file);
       }
-
-      const message = await ArtworkService.editArtwork(artworkId, formData);
-      setResponseMessage(message);
-      setImages([]);
-      setTitle('');
-      setDescription('');
-      setTimeout(() => {
-        setResponseMessage(null);
-      }, 5000);
+      await ArtworkService.editArtwork(artworkId, formData);
+      toast.success('Artwork edited successfully!');
+      setTimeout(() => navigate(-1), 2000);
     } catch (error) {
       console.error('Error editing artwork:', error);
-      setResponseMessage(error);
+      toast.error('Failed to edit artwork. Please try again.');
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    ArtworkService.loadCategories()
+      .then(data => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
+
 
   if (loading) {
     return (
@@ -139,16 +145,12 @@ const EditArtworkUploader = () => {
 
   return (
     <>
-      <div className="flex flex-col w-75 border border-gray-600 rounded-md mt-3">
-        <div className="w-75 p-4 text-center text-white">
+      <ToastContainer />
+      <div className="flex flex-col w-4/5 m-auto rounded-md mt-3">
+        <div className="3/4 p-4 text-center text-white">
           <h2 className="font-bold text-lg mb-2">Edit your artwork</h2>
-          {responseMessage && (
-            <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
-              {responseMessage}
-            </div>
-          )}
         </div>
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row p-5 bg-transparent">
           {isAuthenticated ? (
             <>
               <section className="w-full md:w-1/2 p-4 border-b md:border-b-0 md:border-r border-gray-300">
@@ -194,6 +196,14 @@ const EditArtworkUploader = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
+
+                <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full p-4 rounded-md border border-gray-300'>
+                        {categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
                   <button onClick={editArtwork} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                     {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                   </button>
@@ -209,21 +219,20 @@ const EditArtworkUploader = () => {
             </div>
           )}
         </div>
-        <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-        <div className="test-image-container">
-          {images.map((image, index) => (
-            <div className="image" key={index}>
-              <span className="delete" onClick={() => deleteImage(index)}>
-                &times;
-              </span>
-              <img className='object-cover' src={image.url} alt={image.name} />
-            </div>
-          ))}
+        <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
+          <div className="test-image-container">
+            {images.map((image, index) => (
+              <div className="image" key={index}>
+                <span className="delete" onClick={() => deleteImage(index)}>
+                  &times;
+                </span>
+                <img className='object-cover' src={image.url} alt={image.name} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <BackToTopButton />
-      
-      <Footer />
+        <BackToTopButton />
+        <Footer />
       </div>
     </>
   );

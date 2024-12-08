@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import 'react-quill/dist/quill.snow.css';
 import { layout } from '../style';
 import BlogService from '../services/BlogService'; // Assuming you have a service for creating blog posts
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AddBlog = () => {
     const [title, setTitle] = useState('');
@@ -14,6 +16,9 @@ const AddBlog = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+
+    const navigate = useNavigate();
+
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -39,10 +44,21 @@ const AddBlog = () => {
             formData.append('feature_image', featuredImage);
 
             const response = await BlogService.createBlogPost(formData);
-            setSuccessMessage(response);
+            // setSuccessMessage(response);
+            console.log(response);
+            // setSuccessMessage(response.message);
+
+
             setTitle('');
             setDescription('');
             setFeaturedImage(null);
+            toast.success(response.message); 
+            setTimeout(()=>{
+                navigate(`/blog/${response.data.id}`);
+
+            }, 4000)
+           
+
         } catch (error) {
             setError('Failed to create blog post');
         } finally {
@@ -57,7 +73,8 @@ const AddBlog = () => {
     return (
         <>
             <div className={`${layout.sectionImg} min-h-screen flex flex-col items-center justify-center `}>
-                <div className="max-w-4xl w-full bg-white rounded-lg shadow-md overflow-hidde shadow-lg mt-5">
+                <div className="max-w-4xl w-full bg-white rounded-lg overflow-hidde shadow-lg mt-5">
+                <ToastContainer />
                     <h2 className="text-2xl font-bold text-center py-4 bg-indigo-800 text-white rounded-md">Add Blog</h2>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong className="font-bold">Error:</strong>

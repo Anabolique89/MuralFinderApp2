@@ -60,7 +60,7 @@ const Contact = () => {
 
   return (
     <section>
-    <div className="relative bg-indigo-700 min-h-screen flex items-center justify-center font-raleway">
+    <div className="relative bg-indigo-600 min-h-screen flex items-center justify-center font-raleway">
       <img className="absolute top-0 right-50 w-[70%] h-auto z-0" src={fadeintoyouWhite} alt="Background" />
       <form className=" backdrop-filter backdrop-blur-lg shadow-md rounded-2xl border-solid border-2 border-indigo-600 p-10 w-full max-w-xl h-auto z-10" onSubmit={handleSubmit}>
         <h1 className="text-center text-3xl text-white font-raleway font-semibold ss:text-[30px] text-[35px] ss:leading-[40px] leading-[45px] w-full p-2">Send us a message</h1>
@@ -127,7 +127,7 @@ const Contact = () => {
 
     </div>
     <BackToTopButton />
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
     </section>

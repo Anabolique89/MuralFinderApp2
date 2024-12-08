@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
 import { BackToTopButton } from '../components';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 
 const ProfileSettings = () => {
@@ -24,7 +25,7 @@ const ProfileSettings = () => {
             ...prevState,
             [name]: value
         }));
-    };
+    };delete
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -44,8 +45,9 @@ const ProfileSettings = () => {
 
     return (
         <section className='font-raleway'>
-            <div className="bg-indigo-700 w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-slate-800">
-                <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
+            <div className="bg-indigo-600 w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-slate-800">
+             <a href="/Profile"><ChevronLeftIcon className='text-white'/></a> 
+                {/* <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
                     <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-slate-800 top-12">
                         <h2 className="pl-3 mb-4 text-2xl font-semibold font-raleway">Settings</h2>
                         <a href="#" className="flex items-center px-3 py-2.5 font-raleway font-bold bg-white  text-purple-950 border rounded-full">Profile Settings</a>
@@ -53,7 +55,7 @@ const ProfileSettings = () => {
                         <a href="#" className="flex items-center px-3 py-2.5 font-raleway font-semibold hover:text-purple-950 hover:border hover:rounded-full">Notifications</a>
                         <a href="#" className="flex items-center px-3 py-2.5 font-raleway font-semibold hover:text-purple-950 hover:border hover:rounded-full">Delete Account</a>
                     </div>
-                </aside>
+                </aside> */}
                 <main className="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
                     <div className="p-2 md:p-4">
                         <div className="w-full px-6 pb-4 mt-8 sm:max-w-xl sm:rounded-lg font-raleway text-white">
@@ -71,11 +73,21 @@ const ProfileSettings = () => {
                                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Bio</label>
                                         <div className="rounded-lg border border-indigo-300 p-2.5">
                                             <p className="text-sm text-white">
-                                                {profileData && profileData.profile && profileData.profile.bio}
+                                                {profileData && profileData.profile && profileData.profile.bio} 
+                                            </p>
+                                        </div>
+                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
+                                            <p className="text-sm text-white">
+                                                {profileData && profileData.email }
+                                            </p>
+                                        </div>
+                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
+                                            <p className="text-sm text-white">
+                                                City, Country
                                             </p>
                                         </div>
                                     </div>
-
+                                    <hr className="mt-10 mb-10" />
                                     <h2 className="font-raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Password</h2>
                                     <div className="flex items-center">
                                         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
@@ -100,7 +112,7 @@ const ProfileSettings = () => {
                                     <button className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white">Save Password</button>
                                     <hr className="mt-4 mb-8" />
                                     <div className="flex justify-end">
-                                        {/* <button type="submit" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>SAVE</button> */}
+                                      
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +138,7 @@ const ProfileSettings = () => {
 
             </div>
             <BackToTopButton />
-            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
         </section>

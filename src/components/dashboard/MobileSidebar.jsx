@@ -26,7 +26,7 @@ const MobileSidebar = ({ isSidebarOpen, closeSidebar }) => {
         )}
         onClick={closeSidebar}
       >
-        <div className=" bg-indigo-700 w-3/4 h-full" onClick={(e) => e.stopPropagation()}>
+        <div className=" bg-indigo-600 w-3/4 h-full" onClick={(e) => e.stopPropagation()}>
           <div className="w-full flex justify-end px-5 mt-5">
             <button
               onClick={closeSidebar}

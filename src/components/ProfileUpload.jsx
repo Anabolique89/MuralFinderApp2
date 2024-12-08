@@ -66,7 +66,7 @@ const ProfileImageUpload = ({ imageUrl }) => {
                 {selectedFile && (
                     <>
                         <button type="button" onClick={handleDeleteButtonClick} className="py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full">Delete</button>
-                        <button type="button" onClick={handleUpload} className="py-2 px-4 bg-indigo-500 font-raleway font-bold text-[18px] text-white outline-none uppercase rounded-full">{isLoading ? 'Uploading...' : 'Upload'}</button>
+                        <button type="button" onClick={handleUpload} className="py-2 px-4 bg-indigo-600 font-raleway font-bold text-[18px] text-white outline-none uppercase rounded-full">{isLoading ? 'Uploading...' : 'Upload'}</button>
                     </>
                 )}
                 {message && (

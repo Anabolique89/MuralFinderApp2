@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 import styles from '../style';
 
 const MySwal = withReactContent(Swal);
@@ -32,9 +34,11 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
             }
             await AuthService.updateProfile(userId, profileData);
             console.log('Profile updated successfully');
+            toast.success('Profile updated successfully!');
             onProfileUpdated(); // Call the callback function
         } catch (error) {
             console.error('Error updating profile:', error.message);
+            toast.error('Error updating profile!');
         }
     };
 
@@ -71,7 +75,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         'success'
                     );
                 } catch (error) {
-                    console.error('Error deleting account:', error.message);
+                    console.error('Error deleting account:', error);
                     Swal.fire(
                         'Error!',
                         'There was an error deleting your account.',
@@ -89,7 +93,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
             <div className="items-center mt-8 sm:mt-14 font-Raleway text-white">
                 <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
                     <div className="w-full">
-                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">
+                        <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
                             Your first name
                         </label>
                         <input
@@ -104,7 +108,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         />
                     </div>
                     <div className="w-full">
-                        <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">
+                        <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
                             Your last name
                         </label>
                         <input
@@ -121,7 +125,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                 </div>
 
                 <div className="mb-2 sm:mb-6">
-                    <label htmlFor="bio" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">
+                    <label htmlFor="bio" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
                         Short text about you (Bio)
                     </label>
                     <textarea
@@ -136,7 +140,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                 </div>
 
                 <div className="mb-2 sm:mb-6">
-                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">
+                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
                         What's your profession
                     </label>
                     <input
@@ -147,6 +151,73 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         placeholder="Your profession"
                         value={profileData.proffession}
                         onChange={handleInputChange}
+                        required
+                    />
+                </div>
+
+                <div className="mb-2 sm:mb-6">
+                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
+                        Location
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                        placeholder="Your Location"
+                        // value={profileData.proffession}
+                        // onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                {/* social media links */}
+
+
+                <div className="mb-2 sm:mb-6">
+                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
+                        Facebook
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                        placeholder="Your Facebook Profile Link"
+                        // value={profileData.proffession}
+                        // onChange={handleInputChange}
+                        required
+                    />
+                </div>
+
+                <div className="mb-2 sm:mb-6">
+                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
+                       Instagram
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                        placeholder="Your Instagram Profile Link"
+                        // value={profileData.proffession}
+                        // onChange={handleInputChange}
+                        required
+                    />
+                </div>
+
+                
+                <div className="mb-2 sm:mb-6">
+                    <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
+                       X
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                        placeholder="Your X Profile Link"
+                        // value={profileData.proffession}
+                        // onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -200,6 +271,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     <hr className="mt-4 mb-8" />
                 </div>
             </div>
+            <ToastContainer /> 
         </div>
     );
 };

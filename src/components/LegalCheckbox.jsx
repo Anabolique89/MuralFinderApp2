@@ -1,14 +1,10 @@
 import React from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-const LegalCheckbox = ({ isLegal, setIsLegal }) => {
-  const handleCheckboxChange = (event) => {
-    setIsLegal(event.target.checked);
-  };
-
+const LegalCheckbox = ({ checked, onChange }) => {
   return (
     <FormControlLabel
-      control={<Checkbox checked={isLegal} onChange={handleCheckboxChange} color="primary" />}
+      control={<Checkbox checked={checked} onChange={onChange} color="primary" />}
       label="Is the place still legal?"
     />
   );

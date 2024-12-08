@@ -8,7 +8,7 @@ const CommunitySection2 = () => (
 <div className='absolute z-[3] -left-10 top-4 w-[97%] h-[67%] rounded-full white__gradient opacity-[0.5]'/>
 <div className='absolute z-[0] -left-10 bottom-2 w-[80%] h-[50%] rounded-full pink__gradient opacity-[0.5]'/>
 </div>
-    <div className={`${styles.paddingX} ${layout.sectionInfo} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} ${layout.sectionInfo} bg-indigo-600 w-full overflow-hidden`}>
       <h2 className={styles.heading2}>Find artists
 
  <br className='sm:block hidden' /> for hire</h2>

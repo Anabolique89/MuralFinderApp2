@@ -17,17 +17,17 @@ const linkData = [
   },
   {
     label: "Walls",
-    link: "/WallsDashboard",
+    link: "/walls-dashboard",
     icon: <FaTasks />,
   },
   {
     label: "Artworks",
-    link: "/ArtworksDashboard",
+    link: "/artworks-dashboard",
     icon: <MdTaskAlt />,
   },
   {
     label: "Posts",
-    link: "/PostsDashboard",
+    link: "/post-dashboard",
     icon: <FaUsers />,
   },
   {
@@ -61,12 +61,12 @@ const Sidebar = () => {
         to={el.link}
         onClick={closeSidebar}
         className={clsx(
-          "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-base hover:bg-[#9c3abfa7]",
-          isActive ? "bg-purple-700 text-neutral-100" : "text-white"
+          "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-base hover:bg-blue-500 ",
+          isActive ? "bg-blue-500 text-neutral-100" : "text-white"
         )}
       >
         {el.icon}
-        <span className={isActive ? 'text-neutral-100' : 'hover:text-[#b444d0]'}>{el.label}</span>
+        <span className={isActive ? 'text-neutral-100' : 'hover:text-indigo-700'}>{el.label}</span>
       </Link>
     );
   };
@@ -74,7 +74,7 @@ const Sidebar = () => {
   return (
     <div className='w-full h-full flex flex-col gap-6 p-5'>
       <h1 className='flex gap-1 items-center font-raleway'>
-        <p className='bg-purple-400 p-2 rounded-full'>
+        <p className='bg-blue-500 p-2 rounded-full'>
           <MdOutlineAddTask className='text-white text-2xl font-black' />
         </p>
         <span className='text-2xl font-bold text-white font-raleway'>Admin Panel</span>
@@ -85,10 +85,7 @@ const Sidebar = () => {
         ))}
       </div>
       <div>
-        <button className='w-full flex gap-2 p-2 items-center text-lg text-white'>
-          <MdSettings />
-          <span>Settings</span>
-        </button>
+  
       </div>
     </div>
   );

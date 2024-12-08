@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 const Chart = ({ chartData }) => {
-  const colors = ["#b444d0", "#4CAF50", "#FF9800", "#2196F3"];
+  const colors = ["#3ca6ff", "#c9c9c9", "#FF9800", "#2196F3"];
 
   return (
     <ResponsiveContainer width={"90%"} height={300}>

@@ -65,16 +65,18 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       )}
 
       <div className='w-full'>
+      <Link to={`/artworks/${artwork.id}`}>
         <img
           className='w-full h-48 object-cover p-2'
           src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
           alt={artwork.title || 'Artwork'}
         />
+        </Link>
         <div className='px-6 py-4'>
           <div className='flex items-center'>
             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
               {userImage ? (
-                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
               ) : (
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
@@ -90,7 +92,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
           </div>
           <ul className='flex'>
             <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {artwork.likes_count}</strong></span></li>
-            <li className='flex'><FaComments className=' text-blue-500' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
+            <li className='flex'><FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
           </ul>
           {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">

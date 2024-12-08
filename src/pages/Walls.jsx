@@ -6,15 +6,21 @@ import DisplayWalls from './DisplayWalls';
 
 const Walls = () => (
 
-  <section className='bg-indigo-700 w-full overflow-hidden'>
-     <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-    <WallsIntro />
+<section>
+  <div className={`bg-indigo-600 ${styles.flexStart}`}>
+  <div className={`${styles.boxWidth}`}>
+  <WallsIntro />
+  </div>
+</div>
+<div className={`bg-indigo-600 ${styles.paddingX} ${styles.flexCenter}`}>
+<div className={`${styles.boxWidth}`}>
     <WallsHero />
    
     <DisplayWalls />
     <BackToTopButton />
    
       <Footer />
+    </div>
     </div>
   </section>
 )

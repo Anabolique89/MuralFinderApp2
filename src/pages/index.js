@@ -1,6 +1,6 @@
 import About from "./About";
 import AddBlog from "./AddBlog";
-// import BlogPosts from "./BlogPosts";
+import BlogPosts from "./BlogPosts";
 import Community from "./Community";
 import Contact from "./Contact";
 import DisplayWalls from "./DisplayWalls";
@@ -38,11 +38,14 @@ import ArtworkDetails from "./ArtworkDetails";
 import Trash from "./Trash";
 import Users from "./Users";
 import PostsDashboard from "./PostsDashboard";
+import Shop from "./Shop";
+import Feed from "./Feed";
+import { swimBlue } from "../assets";
 
 export {
   About,
   AddBlog,
-  // BlogPosts,
+  BlogPosts,
   Community,
   Contact,
   DisplayWalls,
@@ -80,4 +83,6 @@ export {
   Trash,
   Users,
   PostsDashboard,
+  Shop,
+  Feed,
 };

@@ -2,26 +2,26 @@ import axios from "axios";
 import { BASE_URL, blogEndpoints } from "../constants/ApiEndpoints";
 
 const BlogService = {
-  getAllBlogPosts: async () => {
+  getAllBlogPosts: async (page = 1, pageSize = 10) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}${blogEndpoints.getAllBlogPosts}`
-      ); // Adding BASE_URL to the endpoint
-      console.log(response.data.data.data);
-      return response.data.data.data;
+      const response = await axios.get(`${BASE_URL}${blogEndpoints.getAllBlogPosts}`, {
+        params: { page, pageSize },
+      });
+      console.log(response.data)
+      return response.data;
+
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       throw new Error("Failed to fetch blog posts");
     }
   },
+  
 
   getBlogPostById: async (postId) => {
     try {
-      console.log(`${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`);
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`
-      ); // Adding BASE_URL to the endpoint
-      console.log(response.data);
+      );
       return response.data.data;
     } catch (error) {
       console.error("Error fetching blog post:", error);
@@ -54,9 +54,7 @@ const BlogService = {
           },
         }
       );
-
-      console.log(response.data);
-      return response.data.message;
+      return response.data;
     } catch (error) {
       console.error("Error creating blog post:", error);
       if (
@@ -64,10 +62,14 @@ const BlogService = {
         error.response.data &&
         error.response.data.message
       ) {
-        console.log(error);
         return error.response.data.message;
+
+        // Ensure the ID is extracted correctly
+        // return {
+        //   message: response.data.message,
+        //   postId: response.data.id, // Adjust this according to your actual response structure
+        // };
       } else {
-        console.log(error);
         return error.response.data.error;
       }
     }
@@ -86,10 +88,10 @@ const BlogService = {
           },
         }
       ); // Adding BASE_URL to the endpoint
-      return response.data.message;
+      return response.data;
     } catch (error) {
-      console.error("Error updating blog post:", error);
-      throw new Error("Failed to update blog post");
+      console.error("Error updating blog post:", error.response.data.message);
+      return error
     }
   },
 
@@ -108,7 +110,7 @@ const BlogService = {
       return response.data;
     } catch (error) {
       console.error("Error deleting blog post:", error);
-      return error.data;
+      return error;
     }
   },
   getCommentsForBlogPost: async (postId) => {
@@ -116,7 +118,6 @@ const BlogService = {
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getCommentsForBlogPost(postId)}`
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error("Error fetching comments for blog post:", error);
@@ -146,7 +147,6 @@ const BlogService = {
   likeBlogPost: async (postId) => {
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       const response = await axios.post(
         `${BASE_URL}${blogEndpoints.likeBlogPost(postId)}`,
         null,
@@ -158,7 +158,6 @@ const BlogService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error liking blog post:", error);
       throw new Error("Failed to like blog post");
     }
   },

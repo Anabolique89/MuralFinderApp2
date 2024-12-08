@@ -9,11 +9,13 @@ import { useParams } from 'react-router-dom';
 import { BackToTopButton, Footer } from '../components';
 import { Link } from 'react-router-dom';
 
+
+
 const SingleArtwork = () => {
 
    const artworkId = useParams();
 
-    const [wall, setWall] = useState(null);
+    const [artwork, setArtwork] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -24,16 +26,19 @@ const SingleArtwork = () => {
         try {
             const response = await ArtworkService.getArtworkById(artworkId);
             if (response.success) {
-                setWall(response.data);
+                setArtwork(response.data);
             } else {
-                console.error('Error fetching wall:', response.message);
+                console.error('Error fetching artwork:', response.message);
             }
         } catch (error) {
-            console.error('Error fetching wall:', error);
+            console.error('Error fetching artwork:', error);
         } finally {
             setIsLoading(false);
         }
     };
+
+    const { profileUrl } = artwork.data.user?.profile?.profile_image_url || 'Nothing';
+    console.log(profileUrl);
 
     <section className={`rounded-xl overflow-hidden shadow-md p-4 ${styles}`}>
         <div className="mx-auto px-4 py-8 max-w-2xl my-20">
@@ -47,11 +52,11 @@ const SingleArtwork = () => {
                 
                    </a>
                    </div>
-            <div className="author flex items-center px-2">
+            <div className="author flex items-center">
                   
             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
-              {userImage ? (
-                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              {artwork.user?.profile ? (
+                <img src={`https://api.muralfinder.net/${artwork.user?.profile?.profile_image_url}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
               ) : (
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
@@ -71,16 +76,16 @@ const SingleArtwork = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora reiciendis ad architecto at aut placeat quia, minus dolor praesentium officia maxime deserunt porro amet ab debitis deleniti modi soluta similique...
                     </p>
                     <div className="flex items-center justify-start mt-2 mx-2">
-                    <a href="#" className="flex text-gray-700">
+                    <a href="#" className="flex text-gray-500">
                         
                              <FontAwesomeIcon icon={faHeart} className="text-purple-950 mr-2" />
                            <span>5</span> 
                         </a>
-                        <a href="#" className="flex text-gray-700">
+                        <a href="#" className="flex text-gray-500">
                         <FontAwesomeIcon icon={faComments} className="text-purple-950 mr-2 ml-4" />
                         <span>5</span>
                    </a>
-                  
+    
                     </div>
                     <div className="flex items-center justify-end mt-2 mx-2">
                         <a href="#" className="text-blue-500 text-xs -ml-3 ">Expand</a>
@@ -89,7 +94,7 @@ const SingleArtwork = () => {
         </div>
     </div>
     <BackToTopButton />
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
     </section>

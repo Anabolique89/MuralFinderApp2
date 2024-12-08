@@ -15,11 +15,11 @@ const data = [
       "65c27a0e18c0a1b750ad5cad",
       "65c30b96e639681a13def0b5",
     ],
-    text: "New task has been assigned to you and 2 others. The task priority is set a normal priority, so check and act accordingly. The task date is Thu Feb 29 2024. Thank you!!!",
+    text: "You can now start building your online presence!",
     task: null,
     notiType: "alert",
     isRead: [],
-    createdAt: "2024-02-09T05:45:23.353Z",
+    createdAt: "2024-07-09T05:45:23.353Z",
     updatedAt: "2024-02-09T05:45:23.353Z",
     __v: 0,
   },
@@ -30,14 +30,14 @@ const data = [
       "65c30b96e639681a13def0b5",
       "65c317360fd860f958baa08e",
     ],
-    text: "New task has been assigned to you and 2 others. The task priority is set a high priority, so check and act accordingly. The task date is Fri Feb 09 2024. Thank you!!!",
+    text: "Welcome to the MuralFinder app. Enjoy your journey & thank you for joining us!!!",
     task: {
       _id: "65c5f12ab5204a81bde866a9",
       title: "Test task",
     },
     notiType: "alert",
     isRead: [],
-    createdAt: "2024-02-09T09:32:26.810Z",
+    createdAt: "2024-07-09T09:32:26.810Z",
     updatedAt: "2024-02-09T09:32:26.810Z",
     __v: 0,
   },
@@ -97,7 +97,7 @@ const NotificationPanel = () => {
           <PopoverPanel className='absolute -right-16 md:-right-2 z-10 mt-5 flex w-screen max-w-max  px-4'>
             {({ close }) =>
               data?.length > 0 && (
-                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5'>
+                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl backdrop-filter backdrop-blur-lg border-solid border-2 border-indigo-700 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 z-[99]'>
                   <div className='p-4'>
                     {data?.slice(0, 5).map((item, index) => (
                       <div
@@ -112,13 +112,13 @@ const NotificationPanel = () => {
                           className='cursor-pointer'
                           onClick={() => viewHandler(item)}
                         >
-                          <div className='flex items-center gap-3 font-semibold text-gray-900 capitalize'>
+                          <div className='flex items-center gap-3 font-semibold text-gray-900 capitalize font-raleway'>
                             <p> {item.notiType}</p>
-                            <span className='text-xs font-normal lowercase'>
+                            <span className='text-xs font-raleway lowercase '>
                               {moment(item.createdAt).fromNow()}
                             </span>
                           </div>
-                          <p className='line-clamp-1 mt-1 text-gray-600'>
+                          <p className='line-clamp-1 mt-1 text-black font-raleway '>
                             {item.text}
                           </p>
                         </div>
@@ -126,14 +126,14 @@ const NotificationPanel = () => {
                     ))}
                   </div>
 
-                  <div className='grid grid-cols-2 divide-x bg-gray-50'>
+                  <div className='grid grid-cols-2 divide-x backdrop-filter backdrop-blur-lg'>
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         onClick={
                           item?.onClick ? () => item.onClick() : () => close()
                         }
-                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-blue-600 hover:bg-gray-100'
+                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-black hover:bg-gray-100 font-raleway'
                       >
                         {item.name}
                       </Link>

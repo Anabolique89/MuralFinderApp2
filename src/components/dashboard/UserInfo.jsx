@@ -9,7 +9,7 @@ const UserInfo = ({ user }) => {
           {/* {({ open }) => ( */}
           <>
             <PopoverButton className='group inline-flex items-center outline-none'>
-              <span>{getInitials(user?.name)}</span>
+              <span>{getInitials(user?.username)}</span>
             </PopoverButton>
   
             <Transition
@@ -25,7 +25,7 @@ const UserInfo = ({ user }) => {
                 <div className='flex items-center gap-4 rounded-lg shadow-lg bg-white p-8'>
                   <div className='w-16 h-16 bg-purple-700 rounded-full text-white flex items-center justify-center text-2xl '>
                     <span className='text-center font-bold'>
-                      {getInitials(user?.name)}
+                      {getInitials(user?.username)}
                     </span>
                   </div>
                   <div className='flex flex-col gap-y-1'>

@@ -87,7 +87,7 @@ const Carousel = () => {
                   <div ref={carousel} className="flex space-x-4">
                     {categoryData.artworks.map(artwork => (
                       <div key={artwork.id} className="w-64 flex-shrink-0 relative">
-                        <a href={`/artworks/${artwork.id}`} className="block rounded-lg overflow-hidden">
+                        <Link to={`/artworks/${artwork.id}`} className="block rounded-lg overflow-hidden">
                           <img src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage} alt={artwork.title || 'Artwork'} className="w-full h-40 object-cover" />
                           <div className="absolute inset-0 flex items-start justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 pl-2">
                             <div className="flex items-center mt-4 w-full text-white justify-between">
@@ -117,7 +117,7 @@ const Carousel = () => {
                               )}
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     ))}
                   </div>

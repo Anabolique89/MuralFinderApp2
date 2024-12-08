@@ -22,39 +22,40 @@ const DisplayWalls = () => {
                 console.log(response.data.data);
                 setWalls(response.data.data);
             } else {
-                console.error('Error fetching walls:', response.message);
+                console.error('Error fetching walls:', response.message || response.data);
             }
         } catch (error) {
-            console.error('Error fetching walls:', error);
+            console.error('Error fetching walls here:', error.message);
         } finally {
-            setIsLoading(false); // Set loading to false regardless of success or failure
+            setIsLoading(false);
         }
     };
 
     return (
-        <section className='bg-indigo w-full overflow-hidden'>
-               <h2 className={` ${styles.heading2} ${styles.paddingX}`}>Walls</h2>
+        <section className={`bg-indigo-600 w-full overflow-hidden`}>
+               <h2 className={`${styles.heading2} ${styles.paddingX} ${styles.flexCenter}`}>Walls</h2>
             {isLoading ? (
                 <div className='flex justify-center items-center h-screen'>
                     <FontAwesomeIcon icon={faSpinner} spin size='4x' />
                 </div>
             ) : (
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-center'>
-                    {walls.map(wall => (
-                        <div key={wall.id} className='m-1'>
-                            <Link to={`/wall/${wall.id}`} className="block">
-                                <div key={wall.id} className='m-4'>
-                                    <MapForWall
-                                        lat={wall.latitude}
-                                        long={wall.longitude}
-                                        title={wall.location_text}
-                                        image={wall.image_path}
-                                    />
-                                </div>
-                            </Link>
-                        </div>
-                    ))}
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center'>
+    {walls.map(wall => (
+        <div key={wall.id} className='m-1'>
+            <Link to={`/wall/${wall.id}`} className="block text-white font-raleway">
+                <div key={wall.id} className='m-2'>
+                    <MapForWall
+                        lat={wall.latitude}
+                        long={wall.longitude}
+                        title={wall.location_text}
+                        image={wall.image_path}
+                        style={{ height: '400px', overflow: 'hidden' }}
+                    />
                 </div>
+            </Link>
+        </div>
+    ))}
+</div>
             )}
             <div className='flex justify-center'>
                 <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>

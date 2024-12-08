@@ -41,6 +41,12 @@ export const navLinks = [
   },
 
   {
+    id: "shop",
+    title: "SHOP",
+    link: "/Shop",
+  },
+
+  {
     id: "contact",
     title: "CONTACT",
     link: "/Contact",
@@ -120,6 +126,11 @@ export const stats = [
     title: "Artworks",
     value: "230K",
   },
+  {
+    id: "stats-4",
+    title: "Products",
+    value: "100+",
+  },
 ];
 
 export const footerLinks = [
@@ -127,22 +138,27 @@ export const footerLinks = [
     title: "Useful Links",
     links: [
       {
+        id: 1,
         name: "Profile",
         link: "/Profile",
       },
       {
+        id: 2,
         name: "About",
         link: "/About",
       },
       {
-        name: "Events",
-        link: "/Events",
+        id: 3,
+        name: "Shop",
+        link: "/Shop",
       },
       {
+        id: 4,
         name: "Reviews",
         link: "/Reviews",
       },
       {
+        id: 5,
         name: "Contact",
         link: "/Contact",
       },
@@ -164,8 +180,8 @@ export const footerLinks = [
         link: "/Map",
       },
       {
-        name: "Blog Feed",
-        link: "/BlogFeed",
+        name: "Blog Posts",
+        link: "/BlogPosts",
       },
       {
         name: "Artwork Feed",
